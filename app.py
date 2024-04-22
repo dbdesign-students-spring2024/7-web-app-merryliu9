@@ -84,16 +84,19 @@ def edit_status(suggestion_id):
     if not suggestion:
         flash("Suggestion not found")
         return redirect(url_for("admin_dashboard"))
-
+        
     if request.method == "POST":
         new_status = request.form.get("status")
         if new_status not in ["new", "acknowledged", "in progress", "implemented"]:
             flash("Invalid status")
             return redirect(url_for("admin_dashboard"))
-        
+
         db.suggestions.update_one({"_id": ObjectId(suggestion_id)}, {"$set": {"status": new_status}})
         flash("Suggestion status updated")
         return redirect(url_for("admin_dashboard"))
+
+    # Ensure the function returns a valid response for GET requests
+    return render_template("edit_status.html", suggestion=suggestion)
 
 @app.route("/delete_suggestion/<suggestion_id>", methods=["POST"])
 def delete_suggestion(suggestion_id):
