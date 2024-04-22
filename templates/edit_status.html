@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="my-4">
+    <h2>Edit Suggestion Status</h2>
+    <form action="{{ url_for('edit_status', suggestion_id=suggestion._id) }}" method="post">
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="new" {% if suggestion.status == 'new' %}selected{% endif %}>New</option>
+                <option value="acknowledged" {% if suggestion.status == 'acknowledged' %}selected{% endif %}>Acknowledged</option>
+                <option value="in progress" {% if suggestion.status == 'in progress' %}selected{% endif %}>In Progress</option>
+                <option value="implemented" {% if suggestion.status == 'implemented' %}selected{% endif %}>Implemented</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Update Status</button>
+    </form>
+</div>
+{% endblock %}
+

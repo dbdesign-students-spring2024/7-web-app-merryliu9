@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="my-4">
+    <h2>Admin Dashboard</h2>
+    <p>Review and manage suggestions.</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Votes</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for suggestion in suggestions %}
+            <tr>
+                <td>{{ suggestion.title }}</td>
+                <td>{{ suggestion.description }}</td>
+                <td>{{ suggestion.votes }}</td>
+                <td>{{ suggestion.status }}</td>
+                <td>
+                    <a href="{{ url_for('edit_status', suggestion_id=suggestion._id) }}" class="btn btn-info">Edit</a>
+                    <!-- Add delete button -->
+                    <a href="{{ url_for('delete_suggestion', suggestion_id=suggestion._id) }}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

@@ -1,11 +1,46 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block container %}
-<h2>Welcome!</h2>
-<p>Welcome to the Flask app. This is the home page. Here are a few links to example pages you might find interesting.
-    <ul>
-        <li><a href="{{ url_for('read')}}">a page that displays information pulled from a MongoDB database collection</a></li>
-        <li><a href="{{ url_for('create')}}">a page with a form you can submit to create a new record in a MongoDB collection</a></li>
-    </ul>
-</p>
+{% block content %}
+<div class="container">
+    <h2>Current Suggestions</h2>
+    <p>Have a look at the suggestions made by fellow students and vote for the ones you support!</p>
+
+    {% if suggestions %}
+        {% for suggestion in suggestions %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ suggestion.title }}</h5>
+                <p class="card-text">{{ suggestion.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ url_for('vote', suggestion_id=suggestion._id) }}" class="btn btn-primary">Vote</a>
+                    <span class="badge badge-secondary">{{ suggestion.votes }} votes</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No suggestions to display. Be the first to suggest!</p>
+    {% endif %}
+
+    <div class="my-4">
+        <h2>Make a New Suggestion</h2>
+        <p>If you have a suggestion to improve our college, please share it with us!</p>
+        <a href="{{ url_for('suggest') }}" class="btn btn-success">Create a Suggestion</a>
+    </div>
+
+    <!-- Admin Login Section -->
+    {% if not session.get('admin_id') %}
+        <div class="my-4">
+            <a href="{{ url_for('login_admin') }}" class="btn btn-dark">Admin Login</a>
+        </div>
+    {% endif %}
+
+    <!-- Admin Dashboard Section (only if admin is logged in) -->
+    {% if session.get('admin_id') %}
+        <div class="my-4">
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-info">Admin Dashboard</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
